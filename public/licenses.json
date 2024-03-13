@@ -1,0 +1,101 @@
+{
+ "MIT": [
+  {
+   "name": "@daybrush/utils",
+   "version": "1.13.0",
+   "license": "MIT",
+   "author": "Daybrush",
+   "homepage": "https://github.com/daybrush/utils#readme",
+   "description": "utils for daybrush"
+  },
+  {
+   "name": "@types/prop-types",
+   "version": "15.7.11",
+   "license": "MIT",
+   "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/prop-types",
+   "description": "TypeScript definitions for prop-types"
+  },
+  {
+   "name": "@types/react",
+   "version": "18.2.64",
+   "license": "MIT",
+   "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react",
+   "description": "TypeScript definitions for react"
+  },
+  {
+   "name": "@types/scheduler",
+   "version": "0.16.8",
+   "license": "MIT",
+   "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/scheduler",
+   "description": "TypeScript definitions for scheduler"
+  },
+  {
+   "name": "csstype",
+   "version": "3.1.3",
+   "license": "MIT",
+   "author": "Fredrik Nicol",
+   "homepage": "https://github.com/frenic/csstype#readme",
+   "description": "Strict TypeScript and Flow types for style based on MDN data"
+  },
+  {
+   "name": "js-tokens",
+   "version": "4.0.0",
+   "license": "MIT",
+   "author": "Simon Lydell",
+   "homepage": "https://github.com/lydell/js-tokens#readme",
+   "description": "A regex that tokenizes JavaScript."
+  },
+  {
+   "name": "loose-envify",
+   "version": "1.4.0",
+   "license": "MIT",
+   "author": "Andres Suarez",
+   "homepage": "https://github.com/zertosh/loose-envify",
+   "description": "Fast (and loose) selective `process.env` replacer using js-tokens instead of an AST"
+  },
+  {
+   "name": "overlap-area",
+   "version": "1.1.0",
+   "license": "MIT",
+   "author": "Daybrush",
+   "homepage": "https://github.com/daybrush/overlap-area#readme",
+   "description": "Find the Overlap Area."
+  },
+  {
+   "name": "react",
+   "version": "18.2.0",
+   "license": "MIT",
+   "homepage": "https://reactjs.org/",
+   "description": "React is a JavaScript library for building user interfaces."
+  },
+  {
+   "name": "react-dom",
+   "version": "18.2.0",
+   "license": "MIT",
+   "homepage": "https://reactjs.org/",
+   "description": "React package for working with the DOM."
+  },
+  {
+   "name": "scheduler",
+   "version": "0.23.0",
+   "license": "MIT",
+   "homepage": "https://reactjs.org/",
+   "description": "Cooperative scheduler for the browser environment."
+  },
+  {
+   "name": "use-sync-external-store",
+   "version": "1.2.0",
+   "license": "MIT",
+   "homepage": "https://github.com/facebook/react#readme",
+   "description": "Backwards compatible shim for React's useSyncExternalStore. Works with any React that supports hooks."
+  },
+  {
+   "name": "zustand",
+   "version": "4.5.2",
+   "license": "MIT",
+   "author": "Paul Henschel",
+   "homepage": "https://github.com/pmndrs/zustand",
+   "description": "🐻 Bear necessities for state management in React"
+  }
+ ]
+}

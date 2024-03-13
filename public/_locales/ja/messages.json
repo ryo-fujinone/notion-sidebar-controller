@@ -1,0 +1,35 @@
+{
+  "extensionName": {
+    "message": "Notion Sidebar Controller"
+  },
+  "extensionDesc": {
+    "message": "ウィンドウがどのディスプレイに表示されているのかを識別してNotionのサイドバーの表示状態を制御します。"
+  },
+  "sidebarState": {
+    "message": "Notionを開いた際のサイドバーの状態"
+  },
+  "sidebarState_default": {
+    "message": "直近の状態（デフォルト）"
+  },
+  "sidebarState_open": {
+    "message": "開く"
+  },
+  "sidebarState_close": {
+    "message": "閉じる"
+  },
+  "preventSidebarOnHover": {
+    "message": "ホバーでサイドバーが表示されるのを防ぐ"
+  },
+  "waitTimeForSidebar": {
+    "message": "Notionを開いた際のサイドバーの状態取得のための待機時間"
+  },
+  "millisecond": {
+    "message": "ミリ秒"
+  },
+  "updateDisplayInfo": {
+    "message": "ディスプレイ情報を更新"
+  },
+  "resetOptions": {
+    "message": "設定をリセット"
+  }
+}

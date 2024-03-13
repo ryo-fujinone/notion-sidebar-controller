@@ -1,0 +1,35 @@
+{
+  "extensionName": {
+    "message": "Notion Sidebar Controller"
+  },
+  "extensionDesc": {
+    "message": "Controls the display state of Notion's sidebar by identifying which display a window is displayed on."
+  },
+  "sidebarState": {
+    "message": "State of the sidebar when Notion is opened"
+  },
+  "sidebarState_default": {
+    "message": "Most recent state (default)"
+  },
+  "sidebarState_open": {
+    "message": "Open"
+  },
+  "sidebarState_close": {
+    "message": "Close"
+  },
+  "preventSidebarOnHover": {
+    "message": "Prevent sidebar from appearing on hover"
+  },
+  "waitTimeForSidebar": {
+    "message": "Wait time to get sidebar status when Notion is opened"
+  },
+  "millisecond": {
+    "message": "ms"
+  },
+  "updateDisplayInfo": {
+    "message": "Update display info"
+  },
+  "resetOptions": {
+    "message": "Reset options"
+  }
+}
