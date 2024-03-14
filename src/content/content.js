@@ -78,6 +78,9 @@ const updateLocalStorage = (currentDisplayOptions) => {
       notionKeyValueStore.value.expanded = expanded;
       notionKeyValueStore.value.currentTab = currentTab;
     } else {
+      if (!expanded) {
+        return;
+      }
       const timestamp = new Date().getTime();
       notionKeyValueStore = {
         id: "KeyValueStore2:updateSidebar",
