@@ -5,20 +5,32 @@
   "extensionDesc": {
     "message": "ウィンドウがどのディスプレイに表示されているのかを識別してNotionのサイドバーの表示状態を制御します。"
   },
-  "sidebarState": {
-    "message": "Notionを開いた際のサイドバーの状態"
+  "leftSidebarState": {
+    "message": "Notionを開いた際の左サイドバーの状態"
+  },
+  "rightSideBarState": {
+    "message": "Notionを開いた際のコメント・更新履歴サイドバーの状態"
   },
   "sidebarState_default": {
-    "message": "直近の状態（デフォルト）"
+    "message": "直近の状態"
   },
   "sidebarState_open": {
     "message": "開く"
+  },
+  "sidebarState_openComments": {
+    "message": "コメントサイドバーを開く"
+  },
+  "sidebarState_openUpdates": {
+    "message": "更新履歴サイドバーを開く"
   },
   "sidebarState_close": {
     "message": "閉じる"
   },
   "preventSidebarOnHover": {
-    "message": "ホバーでサイドバーが表示されるのを防ぐ"
+    "message": "ホバー時に左サイドバーが表示されるのを防ぐ"
+  },
+  "deleteRightSidebarFlag": {
+    "message": "Notionを開いた際にlocalStorageからコメント・更新履歴サイドバーの開閉フラグデータを削除する"
   },
   "waitTimeForSidebar": {
     "message": "Notionを開いた際のサイドバーの状態取得のための待機時間"

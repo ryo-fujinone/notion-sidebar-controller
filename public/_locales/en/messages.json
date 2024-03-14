@@ -5,20 +5,32 @@
   "extensionDesc": {
     "message": "Controls the display state of Notion's sidebar by identifying which display a window is displayed on."
   },
-  "sidebarState": {
-    "message": "State of the sidebar when Notion is opened"
+  "leftSidebarState": {
+    "message": "State of the left sidebar when Notion is opened"
+  },
+  "rightSideBarState": {
+    "message": "State of the comments/updates sidebar when Notion is opened"
   },
   "sidebarState_default": {
-    "message": "Most recent state (default)"
+    "message": "Most recent state"
   },
   "sidebarState_open": {
     "message": "Open"
+  },
+  "sidebarState_openComments": {
+    "message": "Open comments sidebar"
+  },
+  "sidebarState_openUpdates": {
+    "message": "Open updates sidebar"
   },
   "sidebarState_close": {
     "message": "Close"
   },
   "preventSidebarOnHover": {
-    "message": "Prevent sidebar from appearing on hover"
+    "message": "Prevent the left sidebar from appearing on hover"
+  },
+  "deleteRightSidebarFlag": {
+    "message": "Delete open/close flag data for comments/updates sidebar from localStorage when Notion is opened"
   },
   "waitTimeForSidebar": {
     "message": "Wait time to get sidebar status when Notion is opened"

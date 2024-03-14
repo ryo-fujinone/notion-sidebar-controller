@@ -9,8 +9,10 @@ export const getDefaultOptions = () => {
 
 export const getDefaultOptionsForDisplay = () => {
   return {
-    sidebarState: "default",
+    leftSidebarState: "default",
+    rightSideBarState: "default",
     preventSidebarOnHover: false,
+    deleteRightSidebarFlag: false,
   };
 };
 

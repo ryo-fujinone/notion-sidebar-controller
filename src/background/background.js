@@ -1,5 +1,8 @@
 import { getOverlapSize } from "overlap-area";
-import { getDefaultOptions } from "../utils/defaultOptions";
+import {
+  getDefaultOptions,
+  getDefaultOptionsForDisplay,
+} from "../utils/defaultOptions";
 import { getDisplayInfoArray } from "../utils/handleDisplay";
 import { getFromManifest } from "../utils/handleManifest";
 import { getFromStorage, saveToStorage } from "../utils/handleStorage";
@@ -13,19 +16,36 @@ chrome.runtime.onInstalled.addListener(async () => {
     return;
   }
 
-  const defaultOptions = getDefaultOptions();
-  const mergedOptions = {
-    ...defaultOptions,
-    ...options,
+  const getNewOptions = (defaultObj, currentObj) => {
+    const mergedOptions = {
+      ...defaultObj,
+      ...currentObj,
+    };
+    return Object.keys(mergedOptions).reduce((obj, key) => {
+      if (Object.hasOwn(defaultObj, key)) {
+        obj[key] = mergedOptions[key];
+      }
+      return obj;
+    }, {});
   };
-  const mergedOptionsKeys = Object.keys(mergedOptions);
-  const newOptions = mergedOptionsKeys.reduce((obj, key) => {
-    if (Object.hasOwn(defaultOptions, key)) {
-      obj[key] = mergedOptions[key];
-    }
-    return obj;
-  }, {});
 
+  const defaultOptions = getDefaultOptions();
+  const newOptions = getNewOptions(defaultOptions, options);
+
+  const defaultOptionsForDisplay = getDefaultOptionsForDisplay();
+  defaultOptionsForDisplay.id = "";
+  defaultOptionsForDisplay.name = "";
+  const newDisplaysOptionsArray = [];
+  for (const d of newOptions.displays) {
+    const newDisplaysOptions = getNewOptions(defaultOptionsForDisplay, d);
+    if (d.sidebarState) {
+      // Migration from v1.0.0
+      newDisplaysOptions.leftSidebarState = d.sidebarState;
+    }
+    newDisplaysOptionsArray.push(newDisplaysOptions);
+  }
+
+  newOptions.displays = newDisplaysOptionsArray;
   saveToStorage({ options: { ...newOptions } });
 });
 
