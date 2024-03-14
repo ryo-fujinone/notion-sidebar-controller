@@ -33,7 +33,7 @@
     "message": "Prevent the left sidebar from appearing on hover"
   },
   "deleteRightSidebarFlag": {
-    "message": "Delete open/close flag data for comments/updates sidebar from localStorage when Notion is opened"
+    "message": "Delete 'LRU:KeyValueStore2:updateSidebar' when Notion is opened."
   },
   "waitTimeForSidebar": {
     "message": "Wait time to get sidebar status when Notion is opened"

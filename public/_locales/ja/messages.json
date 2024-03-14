@@ -33,7 +33,7 @@
     "message": "ホバー時に左サイドバーが表示されるのを防ぐ"
   },
   "deleteRightSidebarFlag": {
-    "message": "Notionを開いた際にlocalStorageからコメント・更新履歴サイドバーの開閉フラグデータを削除する"
+    "message": "Notionを開いた際に LRU:KeyValueStore2:updateSidebar を削除する"
   },
   "waitTimeForSidebar": {
     "message": "Notionを開いた際のサイドバーの状態取得のための待機時間"
