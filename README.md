@@ -6,5 +6,8 @@
 [Chrome ウェブストア](https://chromewebstore.google.com/detail/notion-sidebar-controller/fldadmaamjoaojadidebmhoaaiijlahc)
 
 ディスプレイ毎に以下の制御が可能です。
-- Notionを開いた際のサイドバーの表示状態（直近の状態、開く、閉じる）
-- ホバー時にサイドバーを表示するかどうか
+- Notionを開いた際の左サイドバーの表示状態  
+    - （直近の状態、開く、閉じる）
+- Notionを開いた際のコメント・更新履歴サイドバーの表示状態
+    - （直近の状態、コメントサイドバーを開く、更新履歴サイドバーを開く、閉じる）
+- ホバー時に左サイドバーを表示するかどうか
