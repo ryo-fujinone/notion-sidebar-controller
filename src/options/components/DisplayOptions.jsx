@@ -96,6 +96,9 @@ const DisplayOptions = ({ options, updateSpecificDisplayOptions }) => {
               <option value="openUpdates">
                 {getI18nMessage("sidebarState_openUpdates")}
               </option>
+              <option value="openAnalytics">
+                {getI18nMessage("sidebarState_openAnalytics")}
+              </option>
               <option value="close">
                 {getI18nMessage("sidebarState_close")}
               </option>

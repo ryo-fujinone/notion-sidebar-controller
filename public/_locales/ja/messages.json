@@ -23,6 +23,9 @@
   "sidebarState_openUpdates": {
     "message": "更新履歴サイドバーを開く"
   },
+  "sidebarState_openAnalytics": {
+    "message": "アナリティクスサイドバーを開く"
+  },
   "sidebarState_close": {
     "message": "閉じる"
   },

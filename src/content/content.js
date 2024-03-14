@@ -54,6 +54,7 @@ const updateLocalStorage = (currentDisplayOptions) => {
 
     let expanded = false;
     let currentTab = 0;
+    let currentSubTab = 0;
     switch (rightSideBarState) {
       case "openComments":
         expanded = true;
@@ -61,6 +62,11 @@ const updateLocalStorage = (currentDisplayOptions) => {
       case "openUpdates":
         expanded = true;
         currentTab = 1;
+        break;
+      case "openAnalytics":
+        expanded = true;
+        currentTab = 1;
+        currentSubTab = 1;
         break;
       default:
         break;
@@ -77,6 +83,7 @@ const updateLocalStorage = (currentDisplayOptions) => {
     if (notionKeyValueStore) {
       notionKeyValueStore.value.expanded = expanded;
       notionKeyValueStore.value.currentTab = currentTab;
+      notionKeyValueStore.value.currentSubTab = currentSubTab;
     } else {
       if (!expanded) {
         return;
@@ -88,7 +95,7 @@ const updateLocalStorage = (currentDisplayOptions) => {
         timestamp,
         value: {
           commentsMode: 1,
-          currentSubTab: 0,
+          currentSubTab,
           currentTab,
           expanded,
           width: 385,
@@ -159,21 +166,85 @@ const controlRightSidebar = async (currentDisplayOptions) => {
   const updatesBtn = actionBtnsContainer.querySelector(
     ".notion-topbar-updates-button",
   );
+
+  const openUpdatesAnalyticsSidebar = () => {
+    switch (rightSideBarState) {
+      case "openUpdates":
+      case "openAnalytics":
+        updatesBtn?.click();
+        break;
+    }
+    new MutationObserver((_, _observer) => {
+      const tabBtnsInUpdates = document.querySelectorAll(
+        ".notion-update-sidebar-tab-updates-header .hide-scrollbar [role='button']",
+      );
+      if (!tabBtnsInUpdates || tabBtnsInUpdates.length !== 2) {
+        return;
+      }
+      _observer.disconnect();
+      switch (rightSideBarState) {
+        case "openUpdates": {
+          const tabBtn = tabBtnsInUpdates[0];
+          if (tabBtn?.parentElement?.style?.position === "") {
+            tabBtn.click();
+          }
+          break;
+        }
+        case "openAnalytics": {
+          const tabBtn = tabBtnsInUpdates[1];
+          if (tabBtn?.parentElement?.style?.position === "") {
+            tabBtn.click();
+          }
+          break;
+        }
+      }
+    }).observe(document, { childList: true, subtree: true });
+  };
+
   if (isOpen && rightSideBarState === "close") {
     toggleRightSidebar();
   } else if (isOpen) {
     // Switching sidebars
-    const isCommentsSidebar = commentsBtn.style.background !== "";
-    if (isCommentsSidebar && rightSideBarState === "openUpdates") {
-      updatesBtn?.click();
-    } else if (!isCommentsSidebar && rightSideBarState == "openComments") {
-      commentsBtn?.click();
+    const isUpdatesSidebar = updatesBtn.style.background !== "";
+    if (isUpdatesSidebar) {
+      // If the Updates/Analytics sidebar is open
+      const tabBtnsInUpdates = document.querySelectorAll(
+        ".notion-update-sidebar-tab-updates-header .hide-scrollbar [role='button']",
+      );
+      switch (rightSideBarState) {
+        case "openComments":
+          commentsBtn?.click();
+          break;
+        case "openUpdates": {
+          if (tabBtnsInUpdates.length !== 2) {
+            break;
+          }
+          const tabBtn = tabBtnsInUpdates[0];
+          if (tabBtn?.parentElement?.style?.position === "") {
+            tabBtn.click();
+          }
+          break;
+        }
+        case "openAnalytics": {
+          if (tabBtnsInUpdates.length !== 2) {
+            break;
+          }
+          const tabBtn = tabBtnsInUpdates[1];
+          if (tabBtn?.parentElement?.style?.position === "") {
+            tabBtn.click();
+          }
+          break;
+        }
+      }
+    } else {
+      // If the comment sidebar is open
+      openUpdatesAnalyticsSidebar();
     }
   } else if (!isOpen) {
     if (rightSideBarState === "openComments") {
       commentsBtn?.click();
-    } else if (rightSideBarState === "openUpdates") {
-      updatesBtn?.click();
+    } else {
+      openUpdatesAnalyticsSidebar();
     }
   }
 };
