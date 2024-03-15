@@ -147,7 +147,7 @@ const controlRightSidebar = async (currentDisplayOptions) => {
         actionBtnsContainer = document.querySelector(
           ".notion-topbar-action-buttons",
         );
-        if (count === 25 || actionBtnsContainer) {
+        if (count === 30 || actionBtnsContainer) {
           clearInterval(interval);
           resolve();
         }
@@ -249,11 +249,32 @@ const controlRightSidebar = async (currentDisplayOptions) => {
   }
 };
 
-const addEventListenersForLeftSidebar = (sidebarContainer) => {
-  const sidebar = sidebarContainer.querySelector(".notion-sidebar");
+const addEventListenersForLeftSidebar = async (leftSidebarContainer) => {
+  const leftSidebar = leftSidebarContainer.querySelector(".notion-sidebar");
+
+  let topbar, switcher;
+  let count = 0;
+  await (() => {
+    return new Promise((resolve) => {
+      const interval = setInterval(() => {
+        count++;
+        topbar = document.querySelector(".notion-topbar > div");
+        switcher = document.querySelector(
+          ".notion-sidebar-switcher .notion-fadein",
+        );
+        if (count === 30 || (topbar && switcher)) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, 200);
+    });
+  })();
+
+  if (!topbar || !switcher) {
+    return;
+  }
 
   // When the Open button is clicked
-  const topbar = document.querySelector(".notion-topbar > div");
   topbar.addEventListener("click", (e) => {
     const d = e.target.getAttribute("d");
     if (
@@ -261,14 +282,11 @@ const addEventListenersForLeftSidebar = (sidebarContainer) => {
       e.target.classList.contains("notion-open-sidebar") ||
       (d && /^M2.25781/.test(d))
     ) {
-      sidebar.style.display = "";
+      leftSidebar.style.display = "";
     }
   });
 
   // When the Close button is clicked
-  const switcher = document.querySelector(
-    ".notion-sidebar-switcher .notion-fadein",
-  );
   switcher.addEventListener("click", (e) => {
     const d = e.target.getAttribute("d");
     if (
@@ -276,7 +294,7 @@ const addEventListenersForLeftSidebar = (sidebarContainer) => {
       e.target.classList.contains("doubleChevronLeft") ||
       (d && /^M7/.test(d))
     ) {
-      sidebar.style.display = "none";
+      leftSidebar.style.display = "none";
     }
   });
 
@@ -289,10 +307,10 @@ const addEventListenersForLeftSidebar = (sidebarContainer) => {
       e.code === "IntlRo" ||
       e.code === "Period";
     if (mainKey && subKey) {
-      if (sidebarContainer.style.width === "0px") {
-        sidebar.style.display = "";
+      if (leftSidebarContainer.style.width === "0px") {
+        leftSidebar.style.display = "";
       } else {
-        sidebar.style.display = "none";
+        leftSidebar.style.display = "none";
       }
     }
   });
