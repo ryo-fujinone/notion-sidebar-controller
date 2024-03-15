@@ -317,7 +317,7 @@ const addEventListenersForLeftSidebar = async (leftSidebarContainer) => {
 };
 
 const controlLeftSidebar = (currentDisplayOptions, leftSidebarContainer) => {
-  const sidebar = leftSidebarContainer.querySelector(".notion-sidebar");
+  const leftSidebar = leftSidebarContainer.querySelector(".notion-sidebar");
   const leftSidebarState = currentDisplayOptions.leftSidebarState;
   const preventSidebarOnHover = currentDisplayOptions.preventSidebarOnHover;
   if (leftSidebarContainer.style.width !== "0px") {
@@ -325,7 +325,7 @@ const controlLeftSidebar = (currentDisplayOptions, leftSidebarContainer) => {
       toggleLeftSidebar();
       setTimeout(() => {
         if (preventSidebarOnHover) {
-          sidebar.style.display = "none";
+          leftSidebar.style.display = "none";
           addEventListenersForLeftSidebar(leftSidebarContainer);
         }
       }, 1000);
@@ -338,12 +338,12 @@ const controlLeftSidebar = (currentDisplayOptions, leftSidebarContainer) => {
     if (leftSidebarState === "open") {
       toggleLeftSidebar();
       if (preventSidebarOnHover) {
-        sidebar.style.display = "";
+        leftSidebar.style.display = "";
         addEventListenersForLeftSidebar(leftSidebarContainer);
       }
     } else {
       if (preventSidebarOnHover) {
-        sidebar.style.display = "none";
+        leftSidebar.style.display = "none";
         addEventListenersForLeftSidebar(leftSidebarContainer);
       }
     }
@@ -373,7 +373,9 @@ chrome.runtime.onMessage.addListener((displayInfo) => {
     const leftSidebarContainer = document.querySelector(
       ".notion-sidebar-container",
     );
-    if (!leftSidebarContainer) return;
+    if (!leftSidebarContainer) {
+      return;
+    }
     _observer.disconnect();
 
     setTimeout(async () => {
