@@ -300,6 +300,9 @@ const addEventListenersForLeftSidebar = async (leftSidebarContainer) => {
 
   // When toggling the sidebar with the keyboard
   document.addEventListener("keydown", (e) => {
+    if (e.shiftKey) {
+      return;
+    }
     const mainKey = e.ctrlKey || e.metaKey;
     const subKey =
       e.code === "IntlYen" ||
