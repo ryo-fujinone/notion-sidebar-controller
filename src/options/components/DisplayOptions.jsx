@@ -7,7 +7,7 @@ const DisplayOptions = ({ options, updateSpecificDisplayOptions }) => {
     id,
     name,
     leftSidebarState,
-    rightSideBarState,
+    rightSidebarState,
     preventSidebarOnHover,
   } = options;
   const displayInfoArray = useDisplayInfoArrayStore(
@@ -72,17 +72,17 @@ const DisplayOptions = ({ options, updateSpecificDisplayOptions }) => {
         <ul className="list-disc ml-1">
           <li>
             <label htmlFor={label2}>
-              {getI18nMessage("rightSideBarState")}
+              {getI18nMessage("rightSidebarState")}
             </label>
             <select
               id={label2}
               name={label2}
               className="block bg-gray-50"
-              value={rightSideBarState}
+              value={rightSidebarState}
               onChange={(e) => {
                 updateSpecificDisplayOptions(
                   id,
-                  "rightSideBarState",
+                  "rightSidebarState",
                   e.target.value,
                 );
               }}

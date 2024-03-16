@@ -43,8 +43,8 @@ const updateLocalStorage = (currentDisplayOptions) => {
 
   // Update right sidebar flag
   (() => {
-    const rightSideBarState = currentDisplayOptions.rightSideBarState;
-    if (rightSideBarState === "default") {
+    const rightSidebarState = currentDisplayOptions.rightSidebarState;
+    if (rightSidebarState === "default") {
       return;
     }
     const notionKeyValueStoreStr = localStorage.getItem(
@@ -55,7 +55,7 @@ const updateLocalStorage = (currentDisplayOptions) => {
     let expanded = false;
     let currentTab = 0;
     let currentSubTab = 0;
-    switch (rightSideBarState) {
+    switch (rightSidebarState) {
       case "openComments":
         expanded = true;
         break;
@@ -134,8 +134,8 @@ const toggleRightSidebar = () => {
 };
 
 const controlRightSidebar = async (currentDisplayOptions) => {
-  const rightSideBarState = currentDisplayOptions.rightSideBarState;
-  if (rightSideBarState === "default") {
+  const rightSidebarState = currentDisplayOptions.rightSidebarState;
+  if (rightSidebarState === "default") {
     return;
   }
   let actionBtnsContainer;
@@ -168,7 +168,7 @@ const controlRightSidebar = async (currentDisplayOptions) => {
   );
 
   const openUpdatesAnalyticsSidebar = () => {
-    switch (rightSideBarState) {
+    switch (rightSidebarState) {
       case "openUpdates":
       case "openAnalytics":
         updatesBtn?.click();
@@ -182,7 +182,7 @@ const controlRightSidebar = async (currentDisplayOptions) => {
         return;
       }
       _observer.disconnect();
-      switch (rightSideBarState) {
+      switch (rightSidebarState) {
         case "openUpdates": {
           const tabBtn = tabBtnsInUpdates[0];
           if (tabBtn?.parentElement?.style?.position === "") {
@@ -201,7 +201,7 @@ const controlRightSidebar = async (currentDisplayOptions) => {
     }).observe(document, { childList: true, subtree: true });
   };
 
-  if (isOpen && rightSideBarState === "close") {
+  if (isOpen && rightSidebarState === "close") {
     toggleRightSidebar();
   } else if (isOpen) {
     // Switching sidebars
@@ -211,7 +211,7 @@ const controlRightSidebar = async (currentDisplayOptions) => {
       const tabBtnsInUpdates = document.querySelectorAll(
         ".notion-update-sidebar-tab-updates-header .hide-scrollbar [role='button']",
       );
-      switch (rightSideBarState) {
+      switch (rightSidebarState) {
         case "openComments":
           commentsBtn?.click();
           break;
@@ -241,7 +241,7 @@ const controlRightSidebar = async (currentDisplayOptions) => {
       openUpdatesAnalyticsSidebar();
     }
   } else if (!isOpen) {
-    if (rightSideBarState === "openComments") {
+    if (rightSidebarState === "openComments") {
       commentsBtn?.click();
     } else {
       openUpdatesAnalyticsSidebar();

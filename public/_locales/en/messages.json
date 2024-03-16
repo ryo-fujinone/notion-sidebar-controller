@@ -8,7 +8,7 @@
   "leftSidebarState": {
     "message": "State of the left sidebar when Notion is opened"
   },
-  "rightSideBarState": {
+  "rightSidebarState": {
     "message": "State of the comments/updates sidebar when Notion is opened"
   },
   "sidebarState_default": {

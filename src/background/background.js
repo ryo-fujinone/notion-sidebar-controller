@@ -42,6 +42,10 @@ chrome.runtime.onInstalled.addListener(async () => {
       // Migration from v1.0.0
       newDisplaysOptions.leftSidebarState = d.sidebarState;
     }
+    if (d.rightSideBarState) {
+      // Migration from v1.2.2
+      newDisplaysOptions.rightSidebarState = d.rightSideBarState;
+    }
     newDisplaysOptionsArray.push(newDisplaysOptions);
   }
 

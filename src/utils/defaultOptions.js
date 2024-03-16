@@ -10,7 +10,7 @@ export const getDefaultOptions = () => {
 export const getDefaultOptionsForDisplay = () => {
   return {
     leftSidebarState: "default",
-    rightSideBarState: "default",
+    rightSidebarState: "default",
     preventSidebarOnHover: false,
     deleteRightSidebarFlag: false,
   };

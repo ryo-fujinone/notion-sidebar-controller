@@ -8,7 +8,7 @@
   "leftSidebarState": {
     "message": "Notionを開いた際の左サイドバーの状態"
   },
-  "rightSideBarState": {
+  "rightSidebarState": {
     "message": "Notionを開いた際のコメント・更新履歴サイドバーの状態"
   },
   "sidebarState_default": {
