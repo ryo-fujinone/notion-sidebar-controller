@@ -112,7 +112,7 @@ const DisplayOptions = ({ options, updateSpecificDisplayOptions }) => {
           type="checkbox"
           id={label3}
           name={label3}
-          className="mr-1 align-middle"
+          className="mr-1.5 align-middle"
           onChange={(e) => {
             updateSpecificDisplayOptions(
               id,
