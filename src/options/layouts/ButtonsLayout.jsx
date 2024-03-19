@@ -16,7 +16,6 @@ const ButtonsLayout = () => {
   );
 
   const handleClickUpdateDisplayInfoBtn = async () => {
-    await updateDisplayInfoArray();
     await updateDisplaysNames();
     await addNewDisplaysOptions();
   };
