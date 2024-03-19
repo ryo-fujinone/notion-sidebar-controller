@@ -1,7 +1,7 @@
 # Notion Sidebar Controller
 
 ウィンドウがどのディスプレイに表示されているのかを識別してNotionのサイドバーの表示状態を制御するChromeの拡張機能。  
-ディスプレイの識別は、ディスプレイ毎のウィンドウと重なる面積を計算し、面積が一番大きいディスプレイをターゲットのディスプレイとして扱います。
+ディスプレイの識別は、ディスプレイ毎のウィンドウと重なる面積を計算し、重なる面積が一番大きいディスプレイをターゲットのディスプレイとして扱います。
 
 [Chrome ウェブストア](https://chromewebstore.google.com/detail/notion-sidebar-controller/fldadmaamjoaojadidebmhoaaiijlahc)
 
