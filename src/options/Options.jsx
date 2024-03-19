@@ -1,7 +1,6 @@
 import { useLayoutEffect } from "react";
 import { useDisplayInfoArrayStore, useOptionsStore } from "../store/store";
 import { generateNewOptions } from "../utils/defaultOptions";
-import { getDisplayInfoArray } from "../utils/handleDisplay";
 import { getFromStorage } from "../utils/handleStorage";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -12,22 +11,33 @@ const Options = () => {
     (state) => state.updateDisplayInfoArray,
   );
   const updateOptions = useOptionsStore((state) => state.updateOptions);
+  const updateDisplaysNames = useOptionsStore(
+    (state) => state.updateDisplaysNames,
+  );
+  const addNewDisplaysOptions = useOptionsStore(
+    (state) => state.addNewDisplaysOptions,
+  );
 
   useLayoutEffect(() => {
     (async () => {
+      await updateDisplayInfoArray();
+
       const result = await getFromStorage("options");
       let options = result.options;
-      const displayInfoArray = await getDisplayInfoArray();
-      updateDisplayInfoArray(displayInfoArray);
-
       let restore = true;
       if (!options) {
         options = await generateNewOptions();
         restore = false;
       }
       updateOptions(options, restore);
+
+      if (restore) {
+        await updateDisplaysNames();
+        await addNewDisplaysOptions();
+      }
     })();
-  }, [updateDisplayInfoArray, updateOptions]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
