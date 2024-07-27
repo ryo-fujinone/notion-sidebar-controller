@@ -260,7 +260,7 @@ const addEventListenersForLeftSidebar = async (leftSidebarContainer) => {
         count++;
         topbar = document.querySelector(".notion-topbar > div");
         switcher = document.querySelector(
-          ".notion-sidebar-switcher .notion-fadein",
+          ".notion-sidebar-switcher > div:nth-of-type(2)",
         );
         if (count === 30 || (topbar && switcher)) {
           clearInterval(interval);
