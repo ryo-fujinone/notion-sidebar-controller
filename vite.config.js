@@ -16,7 +16,7 @@ const organizeLicensesJson = (command) => ({
     const licenses = JSON.parse(jsonStr);
     const newLicenses = Object.keys(licenses).reduce((acc, cur) => {
       const newArray = licenses[cur].map((p) => {
-        delete p.path;
+        delete p.paths;
         return p;
       });
       acc[cur] = newArray;
