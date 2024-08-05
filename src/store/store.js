@@ -102,6 +102,20 @@ export const useOptionsStore = create(
           restore: false,
         }));
       },
+      removeOptionsForNonConnectedDisplays: async () => {
+        await useDisplayInfoArrayStore.getState().updateDisplayInfoArray();
+        const displayInfoArray =
+          useDisplayInfoArrayStore.getState().displayInfoArray;
+
+        const newOptions = get().options;
+        const newDisplaysOptions = newOptions.displays.filter((d) => {
+          return Boolean(displayInfoArray.find((_d) => d.id === _d.id));
+        });
+        set(() => ({
+          options: { ...newOptions, displays: newDisplaysOptions },
+          restore: false,
+        }));
+      },
       resetOptions: async () => {
         const newOptions = await generateNewOptions();
         set(() => ({

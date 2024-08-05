@@ -49,5 +49,8 @@
   },
   "resetOptions": {
     "message": "Reset options"
+  },
+  "removeOptionsForNonConnectedDisplays": {
+    "message": "Remove options for non-connected displays"
   }
 }
