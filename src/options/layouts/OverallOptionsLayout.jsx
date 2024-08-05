@@ -1,4 +1,4 @@
-import { useOptionsStore } from "../../store/store";
+import { useDisplayInfoArrayStore, useOptionsStore } from "../../store/store";
 import { getI18nMessage } from "../../utils/handleI18n";
 import ContentWrapper from "../components/ContentWrapper";
 
@@ -8,10 +8,31 @@ const OverallOptionsLayout = () => {
   const updateSpecificDisplayOptions = useOptionsStore(
     (state) => state.updateSpecificDisplayOptions,
   );
+  const displayInfoArray = useDisplayInfoArrayStore(
+    (state) => state.displayInfoArray,
+  );
 
   return (
     <ContentWrapper>
       <div>
+        <div>
+          <input
+            type="checkbox"
+            id="showAllDisplayOptions"
+            name="showAllDisplayOptions"
+            className="-ml-1 mr-1.5 align-middle"
+            onChange={(e) => {
+              updateOptions({
+                showAllDisplayOptions: e.target.checked,
+              });
+            }}
+            checked={options.showAllDisplayOptions}
+          />
+          <label htmlFor="showAllDisplayOptions" className="align-middle">
+            {getI18nMessage("showAllDisplayOptions")}
+          </label>
+        </div>
+
         <ul className="list-disc ml-4">
           <li className="marker:text-gray-700">
             <p className="mb-1">{getI18nMessage("waitTimeForSidebar")}</p>
@@ -35,6 +56,11 @@ const OverallOptionsLayout = () => {
             <p className="mb-1">{getI18nMessage("deleteRightSidebarFlag")}</p>
             {options.displays.map((d) => {
               const _label = `deleteRightSidebarFlag_${d.id}`;
+              if (!options.showAllDisplayOptions) {
+                if (!displayInfoArray.find((_d) => _d.id === d.id)) {
+                  return false;
+                }
+              }
               return (
                 <div key={d.id}>
                   <input

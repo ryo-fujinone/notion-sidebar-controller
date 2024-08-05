@@ -16,6 +16,7 @@ const DisplayOptionsLayout = () => {
               key={d.id}
               options={d}
               updateSpecificDisplayOptions={updateSpecificDisplayOptions}
+              showAllDisplayOptions={options.showAllDisplayOptions}
             />
           );
         })}

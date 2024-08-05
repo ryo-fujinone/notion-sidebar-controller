@@ -4,6 +4,7 @@ export const getDefaultOptions = () => {
   return {
     displays: [],
     waitTimeForSidebar: 1000,
+    showAllDisplayOptions: false,
   };
 };
 

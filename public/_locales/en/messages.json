@@ -33,7 +33,10 @@
     "message": "Prevent the left sidebar from appearing on hover"
   },
   "deleteRightSidebarFlag": {
-    "message": "Delete 'LRU:KeyValueStore2:updateSidebar' when Notion is opened."
+    "message": "Delete 'LRU:KeyValueStore2:updateSidebar' when Notion is opened"
+  },
+  "showAllDisplayOptions": {
+    "message": "Show options for non-connected displays"
   },
   "waitTimeForSidebar": {
     "message": "Wait time to get sidebar status when Notion is opened"

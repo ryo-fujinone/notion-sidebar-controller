@@ -2,7 +2,11 @@ import { useDisplayInfoArrayStore } from "../../store/store";
 import { getI18nMessage } from "../../utils/handleI18n";
 
 /* eslint-disable react/prop-types */
-const DisplayOptions = ({ options, updateSpecificDisplayOptions }) => {
+const DisplayOptions = ({
+  options,
+  updateSpecificDisplayOptions,
+  showAllDisplayOptions,
+}) => {
   const {
     id,
     name,
@@ -17,11 +21,11 @@ const DisplayOptions = ({ options, updateSpecificDisplayOptions }) => {
     return <></>;
   }
   const displayInfo = displayInfoArray.find((d) => id === d.id);
-  if (!displayInfo?.isEnabled) {
+
+  const bounds = displayInfo?.bounds;
+  if (!showAllDisplayOptions && !bounds) {
     return <></>;
   }
-
-  const bounds = displayInfo.bounds;
   const label1 = `selectLeftSidebarState_${id}`;
   const label2 = `selectRightSidebarState_${id}`;
   const label3 = `preventSidebarOnHover_${id}`;
@@ -31,11 +35,15 @@ const DisplayOptions = ({ options, updateSpecificDisplayOptions }) => {
       <span>
         {name} (ID:{id})
       </span>
-      <p>
-        (
-        {`width: ${bounds.width}, height: ${bounds.height}, left: ${bounds.left}, top: ${bounds.top}`}
-        )
-      </p>
+      {bounds ? (
+        <p>
+          (
+          {`width: ${bounds.width}, height: ${bounds.height}, left: ${bounds.left}, top: ${bounds.top}`}
+          )
+        </p>
+      ) : (
+        <p>(Not connected)</p>
+      )}
 
       <div className="ml-4">
         <ul className="list-disc ml-1">

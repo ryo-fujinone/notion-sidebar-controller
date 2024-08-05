@@ -35,6 +35,9 @@
   "deleteRightSidebarFlag": {
     "message": "Notionを開いた際に LRU:KeyValueStore2:updateSidebar を削除する"
   },
+  "showAllDisplayOptions": {
+    "message": "接続されていないディスプレイのオプションも表示する"
+  },
   "waitTimeForSidebar": {
     "message": "Notionを開いた際のサイドバーの状態取得のための待機時間"
   },
