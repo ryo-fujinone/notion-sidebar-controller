@@ -18,7 +18,7 @@ const CreditsLayout = () => {
           return licenses[k].map((p, i) => {
             return (
               <li key={i}>
-                <p>{`${p.name}@${p.version}`}</p>
+                <p>{`${p.name}@${p.versions[0]}`}</p>
                 {p.author ? <p>Author: {p.author}</p> : ""}
                 {p.license ? <p>License: {p.license}</p> : ""}
                 {p.homepage ? (
