@@ -1,6 +1,7 @@
 import { useLayoutEffect } from "react";
 import { useDisplayInfoArrayStore, useOptionsStore } from "../store/store";
 import { generateNewOptions } from "../utils/defaultOptions";
+import { attemptToRestoreOptions } from "../utils/handleDisplay";
 import { getFromStorage } from "../utils/handleStorage";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -33,10 +34,16 @@ const Options = () => {
         restore = false;
       }
       updateOptions(options, restore);
+      await updateDisplayBounds();
 
       if (restore) {
         await updateDisplaysNames();
-        await updateDisplayBounds();
+        if (options.attemptToRestoreOptions) {
+          const newOptions = await attemptToRestoreOptions();
+          if (newOptions) {
+            updateOptions(newOptions, false);
+          }
+        }
         await addNewDisplaysOptions();
       }
     })();

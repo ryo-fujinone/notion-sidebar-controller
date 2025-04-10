@@ -3,7 +3,10 @@ import {
   getDefaultOptions,
   getDefaultOptionsForDisplay,
 } from "../utils/defaultOptions";
-import { getDisplayInfoArray } from "../utils/handleDisplay";
+import {
+  attemptToRestoreOptions,
+  getDisplayInfoArray,
+} from "../utils/handleDisplay";
 import { getFromManifest } from "../utils/handleManifest";
 import { getFromStorage, saveToStorage } from "../utils/handleStorage";
 
@@ -113,11 +116,15 @@ chrome.runtime.onMessage.addListener(async (_, sender) => {
     );
   }
 
-  // Returns the display info with the largest overlapping area with the window.
-  chrome.tabs.sendMessage(
-    sender.tab.id,
-    displayInfoArray.reduce((acc, cur) => {
-      return acc.windowOverlapSize > cur.windowOverlapSize ? acc : cur;
-    }),
-  );
+  // The display with the largest overlapping area is the target.
+  const targetDisplayInfo = displayInfoArray.reduce((acc, cur) => {
+    return acc.windowOverlapSize > cur.windowOverlapSize ? acc : cur;
+  });
+
+  const options = (await getFromStorage()).options;
+  if (options && options.attemptToRestoreOptions) {
+    await attemptToRestoreOptions();
+  }
+
+  chrome.tabs.sendMessage(sender.tab.id, targetDisplayInfo);
 });

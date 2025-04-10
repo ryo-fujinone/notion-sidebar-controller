@@ -384,7 +384,8 @@ const controlLeftSidebar = (currentDisplayOptions, leftSidebarContainer) => {
   }
 };
 
-chrome.runtime.onMessage.addListener((displayInfo) => {
+chrome.runtime.onMessage.addListener(async (displayInfo) => {
+  options = (await getFromStorage()).options ?? options;
   const currentDisplayOptions = options.displays.find(
     (d) => displayInfo.id === d.id,
   );
@@ -421,7 +422,6 @@ chrome.runtime.onMessage.addListener((displayInfo) => {
 });
 
 const main = async () => {
-  options = (await getFromStorage()).options ?? options;
   chrome.runtime.sendMessage("");
 };
 

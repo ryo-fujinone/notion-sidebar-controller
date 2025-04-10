@@ -35,6 +35,9 @@
   "deleteRightSidebarFlag": {
     "message": "Notionを開いた際に LRU:KeyValueStore2:updateSidebar を削除する"
   },
+  "attemptToRestoreOptions": {
+    "message": "新しいディスプレイが検出された際にディスプレイ名と解像度と座標を基に設定のリストアを試みる"
+  },
   "showAllDisplayOptions": {
     "message": "接続されていないディスプレイの設定も表示する"
   },

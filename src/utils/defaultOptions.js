@@ -5,6 +5,7 @@ export const getDefaultOptions = () => {
     displays: [],
     waitTimeForSidebar: 1000,
     showAllDisplayOptions: false,
+    attemptToRestoreOptions: true,
   };
 };
 
@@ -14,6 +15,7 @@ export const getDefaultOptionsForDisplay = () => {
     rightSidebarState: "default",
     preventSidebarOnHover: false,
     deleteRightSidebarFlag: false,
+    bounds: {},
   };
 };
 
@@ -24,10 +26,10 @@ export const generateNewOptions = async () => {
   for (const displayInfo of displayInfoArray) {
     if (!displayInfo.isEnabled) continue;
     newOptions.displays.push({
+      ...getDefaultOptionsForDisplay(),
       id: displayInfo.id,
       name: displayInfo.name,
       bounds: displayInfo.bounds,
-      ...getDefaultOptionsForDisplay(),
     });
   }
 

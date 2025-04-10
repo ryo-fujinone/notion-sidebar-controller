@@ -15,7 +15,25 @@ const OverallOptionsLayout = () => {
   return (
     <ContentWrapper>
       <div>
-        <div>
+        <div className="flex items-baseline">
+          <input
+            type="checkbox"
+            id="attemptToRestoreOptions"
+            name="attemptToRestoreOptions"
+            className="-ml-1 mr-1.5 align-middle"
+            onChange={(e) => {
+              updateOptions({
+                attemptToRestoreOptions: e.target.checked,
+              });
+            }}
+            checked={options.attemptToRestoreOptions}
+          />
+          <label htmlFor="attemptToRestoreOptions" className="align-middle">
+            {getI18nMessage("attemptToRestoreOptions")}
+          </label>
+        </div>
+
+        <div className="flex items-baseline">
           <input
             type="checkbox"
             id="showAllDisplayOptions"
