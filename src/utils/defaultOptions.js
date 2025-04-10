@@ -14,7 +14,6 @@ export const getDefaultOptionsForDisplay = () => {
     leftSidebarState: "default",
     rightSidebarState: "default",
     preventSidebarOnHover: false,
-    deleteRightSidebarFlag: false,
     bounds: {},
   };
 };

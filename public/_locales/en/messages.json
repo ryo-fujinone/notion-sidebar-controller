@@ -32,9 +32,6 @@
   "preventSidebarOnHover": {
     "message": "Prevent the left sidebar from appearing on hover"
   },
-  "deleteRightSidebarFlag": {
-    "message": "Delete 'LRU:KeyValueStore2:updateSidebar' when Notion is opened"
-  },
   "attemptToRestoreOptions": {
     "message": "Attempts to restore settings based on display name, resolution and coordinates when a new display is detected"
   },

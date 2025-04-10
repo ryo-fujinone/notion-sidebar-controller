@@ -107,10 +107,6 @@ const updateRightSidebarFlagInLocalStorage = (currentDisplayOptions) => {
   );
 };
 
-const removeUpdateSidebarKey = () => {
-  localStorage.removeItem("LRU:KeyValueStore2:updateSidebar");
-};
-
 const toggleLeftSidebar = () => {
   window.dispatchEvent(
     new KeyboardEvent("keydown", { ctrlKey: true, keyCode: 220 }),
@@ -391,10 +387,6 @@ chrome.runtime.onMessage.addListener(async (displayInfo) => {
   );
   if (!currentDisplayOptions) {
     return;
-  }
-
-  if (currentDisplayOptions.deleteRightSidebarFlag) {
-    removeUpdateSidebarKey();
   }
   updateRightSidebarFlagInLocalStorage(currentDisplayOptions);
   updateLeftSidebarFlagInLocalStorage(currentDisplayOptions);
