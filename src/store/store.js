@@ -79,6 +79,31 @@ export const useOptionsStore = create(
           restore: false,
         }));
       },
+      updateDisplayBounds: async () => {
+        await useDisplayInfoArrayStore.getState().updateDisplayInfoArray();
+        const displayInfoArray =
+          useDisplayInfoArrayStore.getState().displayInfoArray;
+
+        const newOptions = structuredClone(get().options);
+        const newDisplaysOptions = [];
+        for (const d of newOptions.displays) {
+          const displayInfo = displayInfoArray.find((_d) => d.id === _d.id);
+          if (!displayInfo) {
+            newDisplaysOptions.push(d);
+            continue;
+          }
+          newDisplaysOptions.push({
+            ...d,
+            bounds: displayInfo.bounds,
+          });
+        }
+        newOptions.displays = newDisplaysOptions;
+
+        set(() => ({
+          options: { ...newOptions },
+          restore: false,
+        }));
+      },
       addNewDisplaysOptions: async () => {
         await useDisplayInfoArrayStore.getState().updateDisplayInfoArray();
         const displayInfoArray =
@@ -93,6 +118,7 @@ export const useOptionsStore = create(
           newOptions.displays.push({
             id: d.id,
             name: d.name,
+            bounds: d.bounds,
             ...getDefaultOptionsForDisplay(),
           });
         }

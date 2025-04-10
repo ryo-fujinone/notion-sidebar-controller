@@ -26,6 +26,7 @@ export const generateNewOptions = async () => {
     newOptions.displays.push({
       id: displayInfo.id,
       name: displayInfo.name,
+      bounds: displayInfo.bounds,
       ...getDefaultOptionsForDisplay(),
     });
   }

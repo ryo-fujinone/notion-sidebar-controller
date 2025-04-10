@@ -14,6 +14,9 @@ const Options = () => {
   const updateDisplaysNames = useOptionsStore(
     (state) => state.updateDisplaysNames,
   );
+  const updateDisplayBounds = useOptionsStore(
+    (state) => state.updateDisplayBounds,
+  );
   const addNewDisplaysOptions = useOptionsStore(
     (state) => state.addNewDisplaysOptions,
   );
@@ -33,6 +36,7 @@ const Options = () => {
 
       if (restore) {
         await updateDisplaysNames();
+        await updateDisplayBounds();
         await addNewDisplaysOptions();
       }
     })();
