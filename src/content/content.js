@@ -4,113 +4,107 @@ import { getFromStorage } from "../utils/handleStorage";
 
 let options = getDefaultOptions();
 
-const updateLocalStorage = (currentDisplayOptions) => {
-  // Update left sidebar flag
-  (() => {
-    const leftSidebarState = currentDisplayOptions.leftSidebarState;
-    if (leftSidebarState === "default") {
-      return;
-    }
-    const notionKeyValueStoreStr = localStorage.getItem(
-      "LRU:KeyValueStore2:sidebar",
-    );
-    let notionKeyValueStore = JSON.parse(notionKeyValueStoreStr);
+const updateLeftSidebarFlagInLocalStorage = (currentDisplayOptions) => {
+  const leftSidebarState = currentDisplayOptions.leftSidebarState;
+  if (leftSidebarState === "default") {
+    return;
+  }
+  const notionKeyValueStoreStr = localStorage.getItem(
+    "LRU:KeyValueStore2:sidebar",
+  );
+  let notionKeyValueStore = JSON.parse(notionKeyValueStoreStr);
 
-    let expanded = false;
-    if (leftSidebarState === "open") {
+  let expanded = false;
+  if (leftSidebarState === "open") {
+    expanded = true;
+  }
+
+  if (notionKeyValueStore) {
+    notionKeyValueStore.value.expanded = expanded;
+  } else {
+    const timestamp = new Date().getTime();
+    notionKeyValueStore = {
+      id: "KeyValueStore2:sidebar",
+      important: true,
+      timestamp,
+      value: {
+        expanded,
+        width: 220,
+      },
+    };
+  }
+  localStorage.setItem(
+    "LRU:KeyValueStore2:sidebar",
+    JSON.stringify(notionKeyValueStore),
+  );
+};
+
+const updateRightSidebarFlagInLocalStorage = (currentDisplayOptions) => {
+  const rightSidebarState = currentDisplayOptions.rightSidebarState;
+  if (rightSidebarState === "default") {
+    return;
+  }
+  const notionKeyValueStoreStr = localStorage.getItem(
+    "LRU:KeyValueStore2:updateSidebar",
+  );
+  let notionKeyValueStore = JSON.parse(notionKeyValueStoreStr);
+
+  let expanded = false;
+  let currentTab = 0;
+  let currentSubTab = 0;
+  switch (rightSidebarState) {
+    case "openComments":
       expanded = true;
-    }
+      break;
+    case "openUpdates":
+      expanded = true;
+      currentTab = 1;
+      break;
+    case "openAnalytics":
+      expanded = true;
+      currentTab = 1;
+      break;
+    default:
+      break;
+  }
 
-    if (notionKeyValueStore) {
-      notionKeyValueStore.value.expanded = expanded;
-    } else {
-      const timestamp = new Date().getTime();
-      notionKeyValueStore = {
-        id: "KeyValueStore2:sidebar",
-        important: true,
-        timestamp,
-        value: {
-          expanded,
-          width: 220,
-        },
-      };
-    }
-    localStorage.setItem(
-      "LRU:KeyValueStore2:sidebar",
-      JSON.stringify(notionKeyValueStore),
-    );
-  })();
+  let currentPageId;
+  const pathname = new URLPattern(window.location.href).pathname;
+  const mached = pathname.match(/[^/-]{32}$/);
+  if (mached) {
+    const id = mached[0];
+    currentPageId = `${id.slice(0, 8)}-${id.slice(8, 12)}-${id.slice(12, 16)}-${id.slice(16, 20)}-${id.slice(20, 32)}`;
+  }
 
-  // Update right sidebar flag
-  (() => {
-    const rightSidebarState = currentDisplayOptions.rightSidebarState;
-    if (rightSidebarState === "default") {
+  if (notionKeyValueStore) {
+    notionKeyValueStore.value.expanded = expanded;
+    notionKeyValueStore.value.currentTab = currentTab;
+    notionKeyValueStore.value.currentSubTab = currentSubTab;
+  } else {
+    if (!expanded) {
       return;
     }
-    const notionKeyValueStoreStr = localStorage.getItem(
-      "LRU:KeyValueStore2:updateSidebar",
-    );
-    let notionKeyValueStore = JSON.parse(notionKeyValueStoreStr);
+    const timestamp = new Date().getTime();
+    notionKeyValueStore = {
+      id: "KeyValueStore2:updateSidebar",
+      important: true,
+      timestamp,
+      value: {
+        currentSubTab,
+        currentTab,
+        expanded,
+        width: 385,
+      },
+    };
+  }
+  if (currentPageId) {
+    notionKeyValueStore.value.openedOnBlockId = currentPageId;
+  }
 
-    let expanded = false;
-    let currentTab = 0;
-    let currentSubTab = 0;
-    switch (rightSidebarState) {
-      case "openComments":
-        expanded = true;
-        break;
-      case "openUpdates":
-        expanded = true;
-        currentTab = 1;
-        break;
-      case "openAnalytics":
-        expanded = true;
-        currentTab = 1;
-        currentSubTab = 1;
-        break;
-      default:
-        break;
-    }
-
-    let currentPageId;
-    const pathname = new URLPattern(window.location.href).pathname;
-    const mached = pathname.match(/[^/-]{32}$/);
-    if (mached) {
-      const id = mached[0];
-      currentPageId = `${id.slice(0, 8)}-${id.slice(8, 12)}-${id.slice(12, 16)}-${id.slice(16, 20)}-${id.slice(20, 32)}`;
-    }
-
-    if (notionKeyValueStore) {
-      notionKeyValueStore.value.expanded = expanded;
-      notionKeyValueStore.value.currentTab = currentTab;
-      notionKeyValueStore.value.currentSubTab = currentSubTab;
-    } else {
-      if (!expanded) {
-        return;
-      }
-      const timestamp = new Date().getTime();
-      notionKeyValueStore = {
-        id: "KeyValueStore2:updateSidebar",
-        important: true,
-        timestamp,
-        value: {
-          commentsMode: 1,
-          currentSubTab,
-          currentTab,
-          expanded,
-          width: 385,
-        },
-      };
-    }
-    if (currentPageId) {
-      notionKeyValueStore.value.openedOnBlockId = currentPageId;
-    }
-
-    localStorage.setItem(
-      "LRU:KeyValueStore2:updateSidebar",
-      JSON.stringify(notionKeyValueStore),
-    );
-  })();
+  localStorage.setItem(
+    "LRU:KeyValueStore2:updateSidebar",
+    JSON.stringify(notionKeyValueStore),
+  );
 };
 
 const removeUpdateSidebarKey = () => {
@@ -160,89 +154,126 @@ const controlRightSidebar = async (currentDisplayOptions) => {
   }
 
   let isOpen = actionBtnsContainer.style.width !== "";
+
   const commentsBtn = actionBtnsContainer.querySelector(
     ".notion-topbar-comments-button",
   );
-  const updatesBtn = actionBtnsContainer.querySelector(
-    ".notion-topbar-updates-button",
-  );
 
-  const openUpdatesAnalyticsSidebar = () => {
-    switch (rightSidebarState) {
-      case "openUpdates":
-      case "openAnalytics":
-        updatesBtn?.click();
-        break;
-    }
-    new MutationObserver((_, _observer) => {
-      const tabBtnsInUpdates = document.querySelectorAll(
-        ".notion-update-sidebar-tab-updates-header .hide-scrollbar [role='button']",
+  const topbarMoreBtn = document.querySelector(".notion-topbar-more-button");
+
+  const switchUpdatesAnalyticsObserver = new MutationObserver(
+    (_, _observer) => {
+      const tabsContainer = document.querySelector(
+        ".notion-update-sidebar-tab-updates-header:has(.hide-scrollbar)",
       );
-      if (!tabBtnsInUpdates || tabBtnsInUpdates.length !== 2) {
+      if (!tabsContainer) {
         return;
       }
       _observer.disconnect();
+      const tabWrappers = tabsContainer.querySelectorAll(
+        ".hide-scrollbar > div",
+      );
+      if (tabWrappers.length !== 2) {
+        return;
+      }
       switch (rightSidebarState) {
         case "openUpdates": {
-          const tabBtn = tabBtnsInUpdates[0];
-          if (tabBtn?.parentElement?.style?.position === "") {
-            tabBtn.click();
+          const tabWrapper = tabWrappers[0];
+          if (tabWrapper.style.position === "") {
+            const tab = tabWrapper.querySelector("div[role='tab']");
+            if (tab) {
+              tab.click();
+              console.log("Open 'updates'");
+            }
           }
           break;
         }
         case "openAnalytics": {
-          const tabBtn = tabBtnsInUpdates[1];
-          if (tabBtn?.parentElement?.style?.position === "") {
-            tabBtn.click();
+          const tabWrapper = tabWrappers[1];
+          if (tabWrapper.style.position === "") {
+            const tab = tabWrapper.querySelector("div[role='tab']");
+            if (tab) {
+              tab.click();
+              console.log("Open 'analytics'");
+            }
           }
           break;
         }
       }
-    }).observe(document, { childList: true, subtree: true });
+    },
+  );
+
+  const openUpdatesAnalyticsSidebar = () => {
+    if (!["openUpdates", "openAnalytics"].includes(rightSidebarState)) {
+      return;
+    }
+
+    new MutationObserver((_, _observer) => {
+      const actionDialog = document.querySelector(
+        "div[role='dialog']:has(.notion-scroller.vertical):has(.sticky-portal-target):has(.clock)",
+      );
+      if (!actionDialog) {
+        return;
+      }
+      _observer.disconnect();
+      const updatesAnalyticsOption = actionDialog.querySelector(
+        "[role='option']:has(svg.clock)",
+      );
+      if (!updatesAnalyticsOption) {
+        console.log("'Updates & analytics' option not found");
+        return;
+      }
+      updatesAnalyticsOption.click();
+
+      switchUpdatesAnalyticsObserver.observe(document, {
+        childList: true,
+        subtree: true,
+      });
+    }).observe(document, { childList: true, subtree: true, attributes: true });
+
+    switch (rightSidebarState) {
+      case "openUpdates":
+      case "openAnalytics":
+        topbarMoreBtn?.click();
+        break;
+    }
   };
 
   if (isOpen && rightSidebarState === "close") {
     toggleRightSidebar();
+    console.log("Close right sidebar");
   } else if (isOpen) {
-    // Switching sidebars
-    const isUpdatesSidebar = updatesBtn.style.background !== "";
-    if (isUpdatesSidebar) {
-      // If the Updates/Analytics sidebar is open
-      const tabBtnsInUpdates = document.querySelectorAll(
-        ".notion-update-sidebar-tab-updates-header .hide-scrollbar [role='button']",
-      );
-      switch (rightSidebarState) {
-        case "openComments":
-          commentsBtn?.click();
-          break;
-        case "openUpdates": {
-          if (tabBtnsInUpdates.length !== 2) {
-            break;
-          }
-          const tabBtn = tabBtnsInUpdates[0];
-          if (tabBtn?.parentElement?.style?.position === "") {
-            tabBtn.click();
-          }
-          break;
-        }
-        case "openAnalytics": {
-          if (tabBtnsInUpdates.length !== 2) {
-            break;
-          }
-          const tabBtn = tabBtnsInUpdates[1];
-          if (tabBtn?.parentElement?.style?.position === "") {
-            tabBtn.click();
-          }
-          break;
-        }
+    const commentsHeader = document.querySelector(
+      ".notion-update-sidebar-tab-comments-header",
+    );
+    if (commentsHeader) {
+      if (rightSidebarState !== "openComments") {
+        openUpdatesAnalyticsSidebar();
       }
     } else {
-      // If the comment sidebar is open
-      openUpdatesAnalyticsSidebar();
+      if (rightSidebarState === "openComments") {
+        const commentsBtn = document.querySelector(
+          ".notion-topbar-comments-button",
+        );
+        if (commentsBtn) {
+          commentsBtn.click();
+          console.log("Open 'comments'");
+        }
+      } else {
+        switchUpdatesAnalyticsObserver.observe(document, {
+          childList: true,
+          subtree: true,
+        });
+        const elem = document.createElement("div");
+        elem.style.display = "none";
+        document.body.append(elem);
+        elem.remove();
+      }
     }
-  } else if (!isOpen) {
+  } else if (!isOpen && rightSidebarState !== "close") {
     if (rightSidebarState === "openComments") {
       commentsBtn?.click();
+      console.log("Open 'comments'");
     } else {
       openUpdatesAnalyticsSidebar();
     }
@@ -364,7 +395,8 @@ chrome.runtime.onMessage.addListener((displayInfo) => {
   if (currentDisplayOptions.deleteRightSidebarFlag) {
     removeUpdateSidebarKey();
   }
-  updateLocalStorage(currentDisplayOptions);
+  updateRightSidebarFlagInLocalStorage(currentDisplayOptions);
+  updateLeftSidebarFlagInLocalStorage(currentDisplayOptions);
 
   new MutationObserver((_, _observer) => {
     if (!document?.body) return;
