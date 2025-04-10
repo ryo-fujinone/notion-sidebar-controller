@@ -309,9 +309,9 @@ const addEventListenersForLeftSidebar = async (leftSidebarContainer) => {
   topbar.addEventListener("click", (e) => {
     const d = e.target.getAttribute("d");
     if (
-      e.target.classList.contains("doubleChevronRight") ||
       e.target.classList.contains("notion-open-sidebar") ||
-      (d && /^M2.25781/.test(d))
+      e.target.classList.contains("arrowChevronDoubleForward") ||
+      (d && e.target.closest(".arrowChevronDoubleForward"))
     ) {
       leftSidebar.style.display = "";
     }
@@ -322,8 +322,8 @@ const addEventListenersForLeftSidebar = async (leftSidebarContainer) => {
     const d = e.target.getAttribute("d");
     if (
       e.target.classList.contains("notion-close-sidebar") ||
-      e.target.classList.contains("doubleChevronLeft") ||
-      (d && /^M7/.test(d))
+      e.target.classList.contains("arrowChevronDoubleBackward") ||
+      (d && e.target.closest(".arrowChevronDoubleBackward"))
     ) {
       leftSidebar.style.display = "none";
     }
