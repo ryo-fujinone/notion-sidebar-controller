@@ -1,5 +1,6 @@
 import { getOverlapSize } from "overlap-area";
 import {
+  generateNewOptions,
   getDefaultOptions,
   getDefaultOptionsForDisplay,
 } from "../utils/defaultOptions";
@@ -121,10 +122,25 @@ chrome.runtime.onMessage.addListener(async (_, sender) => {
     return acc.windowOverlapSize > cur.windowOverlapSize ? acc : cur;
   });
 
-  const options = (await getFromStorage()).options;
-  if (options && options.attemptToRestoreOptions) {
-    await attemptToRestoreOptions();
+  let options = (await getFromStorage()).options;
+  if (!options) {
+    options = await generateNewOptions();
+    await saveToStorage({ options });
+  } else {
+    if (options.attemptToRestoreOptions) {
+      await attemptToRestoreOptions();
+    }
   }
+
+  const newDisplaysOptions = options.displays.map((d) => {
+    if (d.id !== targetDisplayInfo.id) {
+      return d;
+    }
+    d.bounds = targetDisplayInfo.bounds;
+    return d;
+  });
+  options.displays = newDisplaysOptions;
+  await saveToStorage({ options });
 
   chrome.tabs.sendMessage(sender.tab.id, targetDisplayInfo);
 });
