@@ -4,109 +4,6 @@ import { getFromStorage } from "../utils/handleStorage";
 
 let options = getDefaultOptions();
 
-const updateLeftSidebarFlagInLocalStorage = (currentDisplayOptions) => {
-  const leftSidebarState = currentDisplayOptions.leftSidebarState;
-  if (leftSidebarState === "default") {
-    return;
-  }
-  const notionKeyValueStoreStr = localStorage.getItem(
-    "LRU:KeyValueStore2:sidebar",
-  );
-  let notionKeyValueStore = JSON.parse(notionKeyValueStoreStr);
-
-  let expanded = false;
-  if (leftSidebarState === "open") {
-    expanded = true;
-  }
-
-  if (notionKeyValueStore) {
-    notionKeyValueStore.value.expanded = expanded;
-  } else {
-    const timestamp = new Date().getTime();
-    notionKeyValueStore = {
-      id: "KeyValueStore2:sidebar",
-      important: true,
-      timestamp,
-      value: {
-        expanded,
-        width: 220,
-      },
-    };
-  }
-  localStorage.setItem(
-    "LRU:KeyValueStore2:sidebar",
-    JSON.stringify(notionKeyValueStore),
-  );
-};
-
-const updateRightSidebarFlagInLocalStorage = (currentDisplayOptions) => {
-  const rightSidebarState = currentDisplayOptions.rightSidebarState;
-  if (rightSidebarState === "default") {
-    return;
-  }
-  const notionKeyValueStoreStr = localStorage.getItem(
-    "LRU:KeyValueStore2:updateSidebar",
-  );
-  let notionKeyValueStore = JSON.parse(notionKeyValueStoreStr);
-
-  let expanded = false;
-  let currentTab = 0;
-  let currentSubTab = 0;
-  switch (rightSidebarState) {
-    case "openComments":
-      expanded = true;
-      break;
-    case "openUpdates":
-      expanded = true;
-      currentTab = 1;
-      break;
-    case "openAnalytics":
-      expanded = true;
-      currentTab = 1;
-      break;
-    default:
-      break;
-  }
-
-  let currentPageId;
-  const pathname = new URLPattern(window.location.href).pathname;
-  const mached = pathname.match(/[^/-]{32}$/);
-  if (mached) {
-    const id = mached[0];
-    currentPageId = `${id.slice(0, 8)}-${id.slice(8, 12)}-${id.slice(12, 16)}-${id.slice(16, 20)}-${id.slice(20, 32)}`;
-  }
-
-  if (notionKeyValueStore) {
-    notionKeyValueStore.value.expanded = expanded;
-    notionKeyValueStore.value.currentTab = currentTab;
-    notionKeyValueStore.value.currentSubTab = currentSubTab;
-  } else {
-    if (!expanded) {
-      return;
-    }
-    const timestamp = new Date().getTime();
-    notionKeyValueStore = {
-      id: "KeyValueStore2:updateSidebar",
-      important: true,
-      timestamp,
-      value: {
-        currentSubTab,
-        currentTab,
-        expanded,
-        width: 385,
-      },
-    };
-  }
-  if (currentPageId) {
-    notionKeyValueStore.value.openedOnBlockId = currentPageId;
-  }
-
-  localStorage.setItem(
-    "LRU:KeyValueStore2:updateSidebar",
-    JSON.stringify(notionKeyValueStore),
-  );
-};
-
 const toggleLeftSidebar = () => {
   window.dispatchEvent(
     new KeyboardEvent("keydown", { ctrlKey: true, keyCode: 220 }),
@@ -388,8 +285,6 @@ chrome.runtime.onMessage.addListener(async (displayInfo) => {
   if (!currentDisplayOptions) {
     return;
   }
-  updateRightSidebarFlagInLocalStorage(currentDisplayOptions);
-  updateLeftSidebarFlagInLocalStorage(currentDisplayOptions);
 
   new MutationObserver((_, _observer) => {
     if (!document?.body) return;
