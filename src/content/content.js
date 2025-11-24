@@ -52,84 +52,121 @@ const controlRightSidebar = async (currentDisplayOptions) => {
     ".notion-topbar-comments-button",
   );
 
-  const topbarMoreBtn = document.querySelector(".notion-topbar-more-button");
-
-  const switchUpdatesAnalyticsObserver = new MutationObserver(
-    (_, _observer) => {
-      const tabsContainer = document.querySelector(
-        ".notion-update-sidebar-tab-updates-header:has(.hide-scrollbar)",
-      );
-      if (!tabsContainer) {
-        return;
-      }
-      _observer.disconnect();
-      const tabWrappers = tabsContainer.querySelectorAll(
-        ".hide-scrollbar > div",
-      );
-      if (tabWrappers.length !== 2) {
-        return;
-      }
-      switch (rightSidebarState) {
-        case "openUpdates": {
-          const tabWrapper = tabWrappers[0];
-          if (tabWrapper.style.position === "") {
-            const tab = tabWrapper.querySelector("div[role='tab']");
-            if (tab) {
-              tab.click();
-              console.log("Open 'updates'");
-            }
-          }
-          break;
+  const openUpdatesAnalyticsSidebar = async () => {
+    return await (() => {
+      return new Promise((resolve, reject) => {
+        const moreBtn = document.querySelector(".notion-topbar-more-button");
+        if (!moreBtn) {
+          reject(false);
         }
-        case "openAnalytics": {
-          const tabWrapper = tabWrappers[1];
-          if (tabWrapper.style.position === "") {
-            const tab = tabWrapper.querySelector("div[role='tab']");
-            if (tab) {
-              tab.click();
-              console.log("Open 'analytics'");
-            }
+        moreBtn.click();
+        const moreDialogObserver = new MutationObserver((_, _observer) => {
+          const listbox = document.querySelector(
+            "div[role='dialog'] div[role='listbox']",
+          );
+          if (!listbox) {
+            return;
           }
-          break;
-        }
-      }
-    },
-  );
+          _observer.disconnect();
+          const clockSvg = listbox.querySelector("svg.clock");
+          if (!clockSvg) {
+            return;
+          }
+          const targetOption = clockSvg.closest("[role='option']");
+          if (!targetOption) {
+            return;
+          }
+          const nextOption =
+            targetOption.nextElementSibling.querySelector("svg.stack");
+          if (!nextOption) {
+            return;
+          }
 
-  const openUpdatesAnalyticsSidebar = () => {
-    if (!["openUpdates", "openAnalytics"].includes(rightSidebarState)) {
-      return;
-    }
-
-    new MutationObserver((_, _observer) => {
-      const actionDialog = document.querySelector(
-        "div[role='dialog']:has(.notion-scroller.vertical):has(.sticky-portal-target):has(.clock)",
-      );
-      if (!actionDialog) {
-        return;
-      }
-      _observer.disconnect();
-      const updatesAnalyticsOption = actionDialog.querySelector(
-        "[role='option']:has(svg.clock)",
-      );
-      if (!updatesAnalyticsOption) {
-        console.log("'Updates & analytics' option not found");
-        return;
-      }
-      updatesAnalyticsOption.click();
-
-      switchUpdatesAnalyticsObserver.observe(document, {
-        childList: true,
-        subtree: true,
+          targetOption.click();
+          console.log("Open right sidebar");
+          resolve(true);
+        });
+        moreDialogObserver.observe(document, {
+          childList: true,
+          subtree: true,
+        });
+        setTimeout(() => {
+          moreDialogObserver.disconnect();
+          resolve(false);
+        }, 5000);
       });
-    }).observe(document, { childList: true, subtree: true, attributes: true });
+    })();
+  };
 
-    switch (rightSidebarState) {
-      case "openUpdates":
-      case "openAnalytics":
-        topbarMoreBtn?.click();
-        break;
-    }
+  const openCommentsSidebar = () => {
+    const tabpanelObserver = new MutationObserver((_, _observer) => {
+      const tabpanel = document.querySelector(
+        ".notion-update-sidebar div[role='tabpanel'][id^='UpdateSidebar-tabpanel-']",
+      );
+      if (!tabpanel) {
+        return;
+      }
+      _observer.disconnect();
+      if (rightSidebarState === "openComments") {
+        const tablist = document.querySelectorAll(
+          ".notion-update-sidebar-tab-updates-header div[role='tablist'] div[role='tab'][id^='UpdateSidebar-tab-']",
+        );
+        if (tablist.length) {
+          commentsBtn.click();
+          console.log("Open 'comments'");
+        }
+      } else {
+        openUpdatesAnalyticsSidebar();
+      }
+    });
+
+    tabpanelObserver.observe(document, { childList: true, subtree: true });
+    const elem = document.createElement("div");
+    elem.style.display = "none";
+    document.body.append(elem);
+    elem.remove();
+
+    setTimeout(() => {
+      tabpanelObserver.disconnect();
+    }, 5000);
+  };
+
+  const switchUpdatesAnalyticsSidebar = () => {
+    const tablistObserver = new MutationObserver((_, _observer) => {
+      const tablist = document.querySelectorAll(
+        ".notion-update-sidebar-tab-updates-header div[role='tablist'] div[role='tab'][id^='UpdateSidebar-tab-']",
+      );
+      if (tablist.length !== 2) {
+        return;
+      }
+      _observer.disconnect();
+      const updatesTab = tablist[0];
+      const analyticsTab = tablist[1];
+      switch (rightSidebarState) {
+        case "openUpdates":
+          if (updatesTab.ariaSelected === "false") {
+            updatesTab.click();
+            console.log("Open 'updates'");
+          }
+          break;
+        case "openAnalytics":
+          if (analyticsTab.ariaSelected === "false") {
+            analyticsTab.click();
+            console.log("Open 'analytics'");
+          }
+          break;
+      }
+    });
+
+    tablistObserver.observe(document, { childList: true, subtree: true });
+    const elem = document.createElement("div");
+    elem.style.display = "none";
+    document.body.append(elem);
+    elem.remove();
+
+    setTimeout(() => {
+      tablistObserver.disconnect();
+    }, 5000);
   };
 
   if (isOpen && rightSidebarState === "close") {
@@ -140,35 +177,31 @@ const controlRightSidebar = async (currentDisplayOptions) => {
       ".notion-update-sidebar-tab-comments-header",
     );
     if (commentsHeader) {
+      // comments -> updates/analytics
       if (rightSidebarState !== "openComments") {
-        openUpdatesAnalyticsSidebar();
+        if (await openUpdatesAnalyticsSidebar()) {
+          setTimeout(() => {
+            switchUpdatesAnalyticsSidebar();
+          }, 1000);
+        }
       }
     } else {
       if (rightSidebarState === "openComments") {
-        const commentsBtn = document.querySelector(
-          ".notion-topbar-comments-button",
-        );
-        if (commentsBtn) {
-          commentsBtn.click();
-          console.log("Open 'comments'");
-        }
+        // updates/analytics -> comments
+        openCommentsSidebar();
       } else {
-        switchUpdatesAnalyticsObserver.observe(document, {
-          childList: true,
-          subtree: true,
-        });
-        const elem = document.createElement("div");
-        elem.style.display = "none";
-        document.body.append(elem);
-        elem.remove();
+        switchUpdatesAnalyticsSidebar();
       }
     }
   } else if (!isOpen && rightSidebarState !== "close") {
+    if (!(await openUpdatesAnalyticsSidebar())) {
+      return;
+    }
     if (rightSidebarState === "openComments") {
-      commentsBtn?.click();
-      console.log("Open 'comments'");
+      // updates/analytics -> comments
+      openCommentsSidebar();
     } else {
-      openUpdatesAnalyticsSidebar();
+      switchUpdatesAnalyticsSidebar();
     }
   }
 };
@@ -306,6 +339,13 @@ chrome.runtime.onMessage.addListener(async (displayInfo) => {
       controlLeftSidebar(currentDisplayOptions, leftSidebarContainer);
     }, options.waitTimeForSidebar);
   }).observe(document, { childList: true, subtree: true });
+
+  if (document.body) {
+    const elem = document.createElement("div");
+    elem.style.display = "none";
+    document.body.append(elem);
+    elem.remove();
+  }
 });
 
 const main = async () => {
