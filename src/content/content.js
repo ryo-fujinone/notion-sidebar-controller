@@ -233,11 +233,9 @@ const addEventListenersForLeftSidebar = async (leftSidebarContainer) => {
 
   // When the Open button is clicked
   topbar.addEventListener("click", (e) => {
-    const d = e.target.getAttribute("d");
     if (
       e.target.classList.contains("notion-open-sidebar") ||
-      e.target.classList.contains("arrowChevronDoubleForward") ||
-      (d && e.target.closest(".arrowChevronDoubleForward"))
+      e.target.closest(".notion-open-sidebar")
     ) {
       leftSidebar.style.display = "";
     }
@@ -245,11 +243,9 @@ const addEventListenersForLeftSidebar = async (leftSidebarContainer) => {
 
   // When the Close button is clicked
   switcher.addEventListener("click", (e) => {
-    const d = e.target.getAttribute("d");
     if (
       e.target.classList.contains("notion-close-sidebar") ||
-      e.target.classList.contains("arrowChevronDoubleBackward") ||
-      (d && e.target.closest(".arrowChevronDoubleBackward"))
+      e.target.closest(".notion-close-sidebar")
     ) {
       leftSidebar.style.display = "none";
     }
