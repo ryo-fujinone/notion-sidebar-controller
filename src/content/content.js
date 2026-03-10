@@ -26,6 +26,7 @@ const controlRightSidebar = async (currentDisplayOptions) => {
     return;
   }
   let actionBtnsContainer;
+  let moreBtn;
   let count = 0;
   await (() => {
     return new Promise((resolve) => {
@@ -34,7 +35,8 @@ const controlRightSidebar = async (currentDisplayOptions) => {
         actionBtnsContainer = document.querySelector(
           ".notion-topbar-action-buttons",
         );
-        if (count === 30 || actionBtnsContainer) {
+        moreBtn = document.querySelector(".notion-topbar-more-button");
+        if (count === 30 || (actionBtnsContainer && moreBtn)) {
           clearInterval(interval);
           resolve();
         }
@@ -54,10 +56,9 @@ const controlRightSidebar = async (currentDisplayOptions) => {
 
   const openUpdatesAnalyticsSidebar = async () => {
     return await (() => {
-      return new Promise((resolve, reject) => {
-        const moreBtn = document.querySelector(".notion-topbar-more-button");
+      return new Promise((resolve) => {
         if (!moreBtn) {
-          reject(false);
+          resolve(true);
         }
         moreBtn.click();
         const moreDialogObserver = new MutationObserver((_, _observer) => {
@@ -111,9 +112,13 @@ const controlRightSidebar = async (currentDisplayOptions) => {
         const tablist = document.querySelectorAll(
           ".notion-update-sidebar-tab-updates-header div[role='tablist'] div[role='tab'][id^='UpdateSidebar-tab-']",
         );
-        if (tablist.length) {
+        if (tablist.length && commentsBtn) {
           commentsBtn.click();
           console.log("Open 'comments'");
+        } else {
+          setTimeout(() => {
+            toggleRightSidebar();
+          }, 1000);
         }
       } else {
         openUpdatesAnalyticsSidebar();
