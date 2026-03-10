@@ -58,7 +58,7 @@ const controlRightSidebar = async (currentDisplayOptions) => {
     return await (() => {
       return new Promise((resolve) => {
         if (!moreBtn) {
-          resolve(true);
+          resolve(false);
         }
         moreBtn.click();
         const moreDialogObserver = new MutationObserver((_, _observer) => {
